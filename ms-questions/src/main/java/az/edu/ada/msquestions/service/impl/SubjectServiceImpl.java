@@ -1,0 +1,88 @@
+package az.edu.ada.msquestions.service.impl;
+
+import az.edu.ada.msquestions.model.entities.ESubjectStatus;
+import az.edu.ada.msquestions.repository.SubjectRepository;
+import az.edu.ada.msquestions.service.SubjectService;
+import az.edu.ada.msquestions.model.entities.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+@Service
+public class SubjectServiceImpl implements SubjectService {
+
+    private final SubjectRepository subjectRepository;
+
+    @Autowired
+    public SubjectServiceImpl(SubjectRepository subjectRepository) {
+        this.subjectRepository = subjectRepository;
+    }
+
+    @Override
+    public Subject createSubject(Subject subject) {
+        return subjectRepository.save(subject);
+    }
+
+    @Override
+    public List<Subject> getAllSubjects() {
+        return subjectRepository.findAll();
+    }
+
+    @Override
+    public Optional<Subject> getSubjectById(Long id) {
+        return subjectRepository.findById(id);
+    }
+
+    @Override
+    public Subject updateSubject(Long id, Subject updatedSubject) {
+        Optional<Subject> existingSubjectOptional = subjectRepository.findById(id);
+
+        if (existingSubjectOptional.isPresent()) {
+            updatedSubject.setId(id);
+            return subjectRepository.save(updatedSubject);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional
+    public Subject patchSubject(Long id, Map<String, Object> updates) {
+        Optional<Subject> optionalSubject = subjectRepository.findById(id);
+        if (!optionalSubject.isPresent()) {
+            return null;
+        }
+
+        Subject subject = optionalSubject.get();
+        applyPatchToSubject(subject, updates);
+        subjectRepository.save(subject);
+        return subject;
+    }
+
+    private void applyPatchToSubject(Subject subject, Map<String, Object> updates) {
+        Class<?> clazz = subject.getClass();
+        updates.forEach((key, value) -> {
+            try {
+                Field field = clazz.getDeclaredField(key);
+                field.setAccessible(true);
+                var val = value;
+                if(key.equals("subjectStatus")) {
+                    val = ESubjectStatus.valueOf(value.toString());
+                }
+                field.set(subject, val);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                // Handle the exception, possibly logging a warning or throwing a custom exception
+            }
+        });
+    }
+
+    @Override
+    public void deleteSubject(Long id) {
+        subjectRepository.deleteById(id);
+    }
+}
