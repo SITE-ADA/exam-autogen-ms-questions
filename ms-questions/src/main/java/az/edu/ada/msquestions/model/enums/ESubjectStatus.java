@@ -1,4 +1,4 @@
-package az.edu.ada.msquestions.model.entities;
+package az.edu.ada.msquestions.model.enums;
 
 public enum ESubjectStatus {
     ACTIVE,

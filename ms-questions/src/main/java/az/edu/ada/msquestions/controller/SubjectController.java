@@ -24,8 +24,8 @@ public class SubjectController {
 
     @GetMapping
     public ResponseEntity<List<Subject>> getAllSubjects() {
-        List<Subject> addresses = subjectService.getAllSubjects();
-        return ResponseEntity.ok(addresses);
+        List<Subject> subjects = subjectService.getAllSubjects();
+        return ResponseEntity.ok(subjects);
     }
 
     @GetMapping("/{id}")

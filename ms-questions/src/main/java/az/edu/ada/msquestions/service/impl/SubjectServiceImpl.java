@@ -1,6 +1,6 @@
 package az.edu.ada.msquestions.service.impl;
 
-import az.edu.ada.msquestions.model.entities.ESubjectStatus;
+import az.edu.ada.msquestions.model.enums.ESubjectStatus;
 import az.edu.ada.msquestions.repository.SubjectRepository;
 import az.edu.ada.msquestions.service.SubjectService;
 import az.edu.ada.msquestions.model.entities.Subject;
@@ -73,6 +73,8 @@ public class SubjectServiceImpl implements SubjectService {
                 var val = value;
                 if(key.equals("subjectStatus")) {
                     val = ESubjectStatus.valueOf(value.toString());
+                } else if(key.equals("userId")) {
+                    val = Long.parseLong(value.toString());
                 }
                 field.set(subject, val);
             } catch (NoSuchFieldException | IllegalAccessException e) {

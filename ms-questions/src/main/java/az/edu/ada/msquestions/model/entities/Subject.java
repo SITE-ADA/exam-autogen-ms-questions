@@ -1,5 +1,6 @@
 package az.edu.ada.msquestions.model.entities;
 
+import az.edu.ada.msquestions.model.enums.ESubjectStatus;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.*;
@@ -29,9 +30,8 @@ public class Subject {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private ESubjectStatus subjectStatus;
+    private Long subjectStatusId;
 
     @Column(name = "crn", unique = true)
     private String crn;
