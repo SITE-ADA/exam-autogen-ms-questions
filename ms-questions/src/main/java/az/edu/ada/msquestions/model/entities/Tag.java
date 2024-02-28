@@ -1,24 +1,28 @@
 package az.edu.ada.msquestions.model.entities;
 
-import az.edu.ada.msquestions.model.enums.ESubjectStatus;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-@Table
-public class SubjectStatus {
+@Valid
+@Builder
+@Table(name = "tag")
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Enumerated(EnumType.STRING)
-    @Column(unique = true)
-    private ESubjectStatus subjectStatus;
+    private String name;
+    @ManyToOne
+    private Subject subject;
+    @ManyToMany(mappedBy = "tags")
+    private Set<Question> questions;
 }

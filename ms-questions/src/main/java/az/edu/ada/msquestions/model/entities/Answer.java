@@ -1,7 +1,7 @@
 package az.edu.ada.msquestions.model.entities;
 
-import az.edu.ada.msquestions.model.enums.ESubjectStatus;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,15 +10,19 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-@Table
-public class SubjectStatus {
+@Valid
+@Builder
+@Table(name = "answer")
+public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(unique = true)
-    private ESubjectStatus subjectStatus;
+    @Column(columnDefinition = "TEXT")
+    private String text;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
 }

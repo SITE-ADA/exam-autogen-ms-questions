@@ -1,7 +1,6 @@
 package az.edu.ada.msquestions.model.entities;
 
 import az.edu.ada.msquestions.model.enums.EQuestionType;
-import az.edu.ada.msquestions.model.enums.ESubjectStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +19,6 @@ public class QuestionType {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(unique = true)
     private EQuestionType questionType;
 }
