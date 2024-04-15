@@ -12,6 +12,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/questions/subject-status")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class SubjectStatusController {
     private final SubjectStatusService subjectStatusService;
 

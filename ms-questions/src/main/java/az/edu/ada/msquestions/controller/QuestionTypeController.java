@@ -12,6 +12,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/questions/question-type")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class QuestionTypeController {
     private final QuestionTypeService questionTypeService;
 

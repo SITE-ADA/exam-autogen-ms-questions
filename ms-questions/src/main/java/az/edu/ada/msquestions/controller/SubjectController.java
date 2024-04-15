@@ -12,7 +12,6 @@ import java.util.Map;
 @RequestMapping("/api/v1/questions/subject")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", maxAge = 3600)
-
 public class SubjectController {
     private final SubjectService subjectService;
 

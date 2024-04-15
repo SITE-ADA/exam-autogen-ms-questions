@@ -13,7 +13,6 @@ import java.util.Map;
 @RequestMapping("/api/v1/questions/question-pool")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*", maxAge = 3600)
-
 public class QuestionPoolController {
     private final QuestionPoolService questionPoolService;
 

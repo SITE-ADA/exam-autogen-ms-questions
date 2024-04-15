@@ -1,4 +1,4 @@
-package az.edu.ada.msquestions.config;
+package az.edu.ada.msquestions.init;
 
 import az.edu.ada.msquestions.model.entities.QuestionType;
 import az.edu.ada.msquestions.model.enums.EQuestionType;
