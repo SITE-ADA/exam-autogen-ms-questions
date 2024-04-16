@@ -2,9 +2,12 @@ package az.edu.ada.msquestions.service.impl;
 
 import az.edu.ada.msquestions.model.dto.QuestionCountDTO;
 import az.edu.ada.msquestions.model.dto.QuestionDTO;
+import az.edu.ada.msquestions.model.dto.QuestionTestDTO;
+import az.edu.ada.msquestions.model.entities.Answer;
 import az.edu.ada.msquestions.model.entities.Question;
 import az.edu.ada.msquestions.model.entities.Tag;
-import az.edu.ada.msquestions.repository.QuestionRepository;
+import az.edu.ada.msquestions.model.request.QuestionRequest;
+import az.edu.ada.msquestions.repository.*;
 import az.edu.ada.msquestions.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,16 +16,44 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final QuestionPoolRepository questionPoolRepository;
+    private final QuestionTypeRepository questionTypeRepository;
+    private final TagRepository tagRepository;
 
     @Autowired
-    public QuestionServiceImpl(QuestionRepository questionRepository) {
+    public QuestionServiceImpl(QuestionRepository questionRepository, QuestionPoolRepository questionPoolRepository,
+                               QuestionTypeRepository questionTypeRepository, TagRepository tagRepository) {
         this.questionRepository = questionRepository;
+        this.questionPoolRepository = questionPoolRepository;
+        this.questionTypeRepository = questionTypeRepository;
+        this.tagRepository = tagRepository;
+    }
+
+
+    @Override
+    public QuestionTestDTO getQuestionDTOForMsTest(Long questionId) {
+        Question question = questionRepository.findById(questionId).get();
+
+        Set<Long> tagsIds = question.getTags().stream()
+                .map(Tag::getId)
+                .collect(Collectors.toSet());
+
+        return QuestionTestDTO.builder()
+                .questionId(question.getId())
+                .text(question.getText())
+                .notes(question.getNotes())
+                .defaultScore(question.getDefaultScore())
+                .questionTypeId(question.getQuestionType().getId())
+                .questionPoolId(question.getQuestionPool().getId())
+                .tagsIds(tagsIds)
+                .build();
     }
 
     @Override
@@ -50,7 +81,20 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question createQuestion(Question question) {
+    public Question createQuestion(QuestionRequest questionRequest) {
+
+        Set<Long> tagsIds = questionRequest.getTagsIds();
+        Set<Tag> tags = tagRepository.findAllByIdIn(tagsIds);
+
+        var question = Question.builder()
+                .text(questionRequest.getText())
+                .notes(questionRequest.getNotes())
+                .defaultScore(questionRequest.getDefaultScore())
+                .questionType(questionTypeRepository.findById(questionRequest.getQuestionTypeId()).get())
+                .questionPool(questionPoolRepository.findById(questionRequest.getQuestionPoolId()).get())
+                .tags(tags)
+                .build();
+
         return questionRepository.save(question);
     }
 

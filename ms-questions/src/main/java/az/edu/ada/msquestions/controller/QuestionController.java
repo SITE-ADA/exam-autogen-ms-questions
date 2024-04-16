@@ -2,7 +2,9 @@ package az.edu.ada.msquestions.controller;
 
 import az.edu.ada.msquestions.model.dto.QuestionCountDTO;
 import az.edu.ada.msquestions.model.dto.QuestionDTO;
+import az.edu.ada.msquestions.model.dto.QuestionTestDTO;
 import az.edu.ada.msquestions.model.entities.Question;
+import az.edu.ada.msquestions.model.request.QuestionRequest;
 import az.edu.ada.msquestions.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,11 @@ import java.util.Map;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class QuestionController {
     private final QuestionService questionService;
+
+    @GetMapping("/{questionPoolId}/forTest")
+    public QuestionTestDTO getQuestionIdForTest(@PathVariable Long questionPoolId) {
+        return  questionService.getQuestionDTOForMsTest(questionPoolId);
+    }
 
     @GetMapping("/pool/{questionPoolId}")
     public ResponseEntity<List<QuestionDTO>> getQuestionsByQuestionPoolId(@PathVariable Long questionPoolId) {
@@ -35,8 +42,8 @@ public class QuestionController {
     }
 
     @PostMapping
-    public ResponseEntity<Question> createQuestion(@RequestBody Question question) {
-        Question createdQuestion = questionService.createQuestion(question);
+    public ResponseEntity<Question> createQuestion(@RequestBody QuestionRequest questionRequest) {
+        Question createdQuestion = questionService.createQuestion(questionRequest);
         return ResponseEntity.ok(createdQuestion);
     }
 

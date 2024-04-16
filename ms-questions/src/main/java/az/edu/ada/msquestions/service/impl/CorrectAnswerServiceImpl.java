@@ -1,7 +1,10 @@
 package az.edu.ada.msquestions.service.impl;
 
 import az.edu.ada.msquestions.model.entities.CorrectAnswer;
+import az.edu.ada.msquestions.model.request.CorrectAnswerRequest;
+import az.edu.ada.msquestions.repository.AnswerRepository;
 import az.edu.ada.msquestions.repository.CorrectAnswerRepository;
+import az.edu.ada.msquestions.repository.QuestionRepository;
 import az.edu.ada.msquestions.service.CorrectAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,14 +18,26 @@ import java.util.Optional;
 public class CorrectAnswerServiceImpl implements CorrectAnswerService {
 
     private final CorrectAnswerRepository correctAnswerRepository;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
     @Autowired
-    public CorrectAnswerServiceImpl(CorrectAnswerRepository correctAnswerRepository) {
+    public CorrectAnswerServiceImpl(CorrectAnswerRepository correctAnswerRepository,
+                                    QuestionRepository questionRepository,
+                                    AnswerRepository answerRepository) {
         this.correctAnswerRepository = correctAnswerRepository;
+        this.questionRepository = questionRepository;
+        this.answerRepository = answerRepository;
     }
 
     @Override
-    public CorrectAnswer createCorrectAnswer(CorrectAnswer correctAnswer) {
+    public CorrectAnswer createCorrectAnswer(CorrectAnswerRequest correctAnswerRequest) {
+
+        var correctAnswer = CorrectAnswer.builder()
+                .question(questionRepository.findById(correctAnswerRequest.getQuestion()).get())
+                .answer(answerRepository.findById(correctAnswerRequest.getAnswer()).get())
+                .build();
+
         return correctAnswerRepository.save(correctAnswer);
     }
 

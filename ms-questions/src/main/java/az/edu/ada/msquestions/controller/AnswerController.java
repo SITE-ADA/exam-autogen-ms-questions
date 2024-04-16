@@ -1,6 +1,7 @@
 package az.edu.ada.msquestions.controller;
 
 import az.edu.ada.msquestions.model.entities.Answer;
+import az.edu.ada.msquestions.model.request.AnswerRequest;
 import az.edu.ada.msquestions.service.AnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,8 @@ public class AnswerController {
     private final AnswerService answerService;
 
     @PostMapping
-    public ResponseEntity<Answer> createAnswer(@RequestBody Answer answer) {
-        Answer createdAnswer = answerService.createAnswer(answer);
+    public ResponseEntity<Answer> createAnswer(@RequestBody AnswerRequest answerRequest) {
+        Answer createdAnswer = answerService.createAnswer(answerRequest);
         return ResponseEntity.ok(createdAnswer);
     }
 

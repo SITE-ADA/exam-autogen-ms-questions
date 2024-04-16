@@ -1,7 +1,9 @@
 package az.edu.ada.msquestions.service.impl;
 
 import az.edu.ada.msquestions.model.entities.Answer;
+import az.edu.ada.msquestions.model.request.AnswerRequest;
 import az.edu.ada.msquestions.repository.AnswerRepository;
+import az.edu.ada.msquestions.repository.QuestionRepository;
 import az.edu.ada.msquestions.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,14 +17,22 @@ import java.util.Optional;
 public class AnswerServiceImpl implements AnswerService {
 
     private final AnswerRepository answerRepository;
+    private final QuestionRepository questionRepository;
 
     @Autowired
-    public AnswerServiceImpl(AnswerRepository answerRepository) {
+    public AnswerServiceImpl(AnswerRepository answerRepository, QuestionRepository questionRepository) {
         this.answerRepository = answerRepository;
+        this.questionRepository = questionRepository;
     }
 
     @Override
-    public Answer createAnswer(Answer answer) {
+    public Answer createAnswer(AnswerRequest answerRequest) {
+
+        var answer = Answer.builder()
+                .question(questionRepository.findById(answerRequest.getQuestion()).get())
+                .text(answerRequest.getText())
+                .build();
+
         return answerRepository.save(answer);
     }
 

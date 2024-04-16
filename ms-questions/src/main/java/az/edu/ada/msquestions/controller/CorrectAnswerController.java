@@ -1,6 +1,7 @@
 package az.edu.ada.msquestions.controller;
 
 import az.edu.ada.msquestions.model.entities.CorrectAnswer;
+import az.edu.ada.msquestions.model.request.CorrectAnswerRequest;
 import az.edu.ada.msquestions.service.CorrectAnswerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,8 @@ public class CorrectAnswerController {
     private final CorrectAnswerService correctAnswerService;
 
     @PostMapping
-    public ResponseEntity<CorrectAnswer> createCorrectAnswer(@RequestBody CorrectAnswer correctAnswer) {
-        CorrectAnswer createdCorrectAnswer = correctAnswerService.createCorrectAnswer(correctAnswer);
+    public ResponseEntity<CorrectAnswer> createCorrectAnswer(@RequestBody CorrectAnswerRequest correctAnswerRequest) {
+        CorrectAnswer createdCorrectAnswer = correctAnswerService.createCorrectAnswer(correctAnswerRequest);
         return ResponseEntity.ok(createdCorrectAnswer);
     }
 
