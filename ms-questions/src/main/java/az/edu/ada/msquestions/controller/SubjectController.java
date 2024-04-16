@@ -1,7 +1,9 @@
 package az.edu.ada.msquestions.controller;
 
+import az.edu.ada.msquestions.model.dto.SubjectDTO;
 import az.edu.ada.msquestions.model.entities.Subject;
 import az.edu.ada.msquestions.service.SubjectService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.Map;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class SubjectController {
     private final SubjectService subjectService;
+
 
     @PostMapping
     public ResponseEntity<Subject> createSubject(@RequestBody Subject subject) {
@@ -59,4 +62,11 @@ public class SubjectController {
         subjectService.deleteSubject(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("by-user")
+    public List<SubjectDTO> getSubjectsByUser(@RequestParam Long userId) {
+        // Corrected to match the service layer method name and return type
+        return subjectService.findSubjectsByUserId(userId);
+    }
+
 }

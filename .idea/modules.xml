@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/exam-autogen-ms-questions.iml" filepath="$PROJECT_DIR$/.idea/exam-autogen-ms-questions.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ms-questions/ms-questions.iml" filepath="$PROJECT_DIR$/ms-questions/ms-questions.iml" />
     </modules>
   </component>
 </project>

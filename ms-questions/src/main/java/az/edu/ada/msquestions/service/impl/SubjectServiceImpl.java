@@ -1,5 +1,6 @@
 package az.edu.ada.msquestions.service.impl;
 
+import az.edu.ada.msquestions.model.dto.SubjectDTO;
 import az.edu.ada.msquestions.model.enums.ESubjectStatus;
 import az.edu.ada.msquestions.repository.SubjectRepository;
 import az.edu.ada.msquestions.service.SubjectService;
@@ -12,10 +13,10 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
-
     private final SubjectRepository subjectRepository;
 
     @Autowired
@@ -87,4 +88,23 @@ public class SubjectServiceImpl implements SubjectService {
     public void deleteSubject(Long id) {
         subjectRepository.deleteById(id);
     }
+
+    public List<SubjectDTO> findSubjectsByUserId(Long userId) {
+        return subjectRepository.findByUserId(userId).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    private SubjectDTO convertToDto(Subject subject) {
+        return new SubjectDTO(
+                subject.getId(),
+                subject.getName(),
+                subject.getCrn(),
+                subject.getTerm(),
+                subject.getSubjectStatusId(),
+                subject.getCourseObjectives(),
+                subject.getDescription()
+        );
+    }
+
 }
