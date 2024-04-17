@@ -18,9 +18,9 @@ public class AnswerController {
     private final AnswerService answerService;
 
     @PostMapping
-    public ResponseEntity<Answer> createAnswer(@RequestBody AnswerRequest answerRequest) {
-        Answer createdAnswer = answerService.createAnswer(answerRequest);
-        return ResponseEntity.ok(createdAnswer);
+    public ResponseEntity<List<Answer>> createAnswer(@RequestBody AnswerRequest answerRequest) {
+        List<Answer> createdAnswers = answerService.createAnswers(answerRequest);
+        return ResponseEntity.ok(createdAnswers);
     }
 
     @GetMapping

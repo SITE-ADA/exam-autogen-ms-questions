@@ -1,5 +1,9 @@
 package az.edu.ada.msquestions.model.request;
 
+import az.edu.ada.msquestions.model.entities.Question;
+import az.edu.ada.msquestions.model.entities.Subject;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,9 +18,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Valid
-public class AnswerRequest {
+public class TagRequest {
     @NotNull
-    private Long question;
+    private String name;
     @NotNull
-    private Set<String> text;
+    private Long subjectId;
 }

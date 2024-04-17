@@ -1,6 +1,7 @@
 package az.edu.ada.msquestions.service.impl;
 
 import az.edu.ada.msquestions.model.entities.Answer;
+import az.edu.ada.msquestions.model.entities.Question;
 import az.edu.ada.msquestions.model.request.AnswerRequest;
 import az.edu.ada.msquestions.repository.AnswerRepository;
 import az.edu.ada.msquestions.repository.QuestionRepository;
@@ -12,6 +13,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AnswerServiceImpl implements AnswerService {
@@ -26,14 +28,20 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
-    public Answer createAnswer(AnswerRequest answerRequest) {
+    public List<Answer> createAnswers(AnswerRequest answerRequest) {
 
-        var answer = Answer.builder()
-                .question(questionRepository.findById(answerRequest.getQuestion()).get())
-                .text(answerRequest.getText())
-                .build();
+        Question question = questionRepository.findById(answerRequest.getQuestion())
+                .orElseThrow(() -> new IllegalArgumentException("Question not found"));
 
-        return answerRepository.save(answer);
+        List<Answer> answers = answerRequest.getText().stream()
+                .map(text -> Answer.builder()
+                        .question(question)
+                        .text(text)
+                        .build())
+                .collect(Collectors.toList());
+
+        // Save all answers to the database
+        return answerRepository.saveAll(answers);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package az.edu.ada.msquestions.controller;
 
 import az.edu.ada.msquestions.model.entities.Tag;
+import az.edu.ada.msquestions.model.request.TagRequest;
 import az.edu.ada.msquestions.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,8 @@ public class TagController {
     private final TagService tagService;
 
     @PostMapping
-    public ResponseEntity<Tag> createTag(@RequestBody Tag tag) {
-        Tag createdTag = tagService.createTag(tag);
+    public ResponseEntity<Tag> createTag(@RequestBody TagRequest tagRequest) {
+        Tag createdTag = tagService.createTag(tagRequest);
         return ResponseEntity.ok(createdTag);
     }
 

@@ -42,8 +42,7 @@ public class Question {
     @JoinColumn(name = "question_pool_id")
     private QuestionPool questionPool;
 
-    @NotNull
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "QuestionTag",
             joinColumns = @JoinColumn(name = "question_id"),

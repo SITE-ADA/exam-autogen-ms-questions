@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface AnswerService {
-    Answer createAnswer(AnswerRequest answerRequest);
+    List<Answer> createAnswers(AnswerRequest answerRequest);
     Optional<Answer> getAnswerById(Long id);
     Answer updateAnswer(Long id, Answer answer);
     Answer patchAnswer(Long id, Map<String, Object> updates);

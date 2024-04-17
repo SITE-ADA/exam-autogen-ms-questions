@@ -1,28 +1,41 @@
 package az.edu.ada.msquestions.service.impl;
 
+import az.edu.ada.msquestions.model.entities.Question;
 import az.edu.ada.msquestions.model.entities.Tag;
+import az.edu.ada.msquestions.model.request.TagRequest;
+import az.edu.ada.msquestions.repository.QuestionRepository;
+import az.edu.ada.msquestions.repository.SubjectRepository;
 import az.edu.ada.msquestions.repository.TagRepository;
 import az.edu.ada.msquestions.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TagServiceImpl implements TagService {
 
     private final TagRepository tagRepository;
+    private final QuestionRepository questionRepository;
+    private final SubjectRepository subjectRepository;
 
     @Autowired
-    public TagServiceImpl(TagRepository tagRepository) {
+    public TagServiceImpl(TagRepository tagRepository, QuestionRepository questionRepository, SubjectRepository subjectRepository) {
         this.tagRepository = tagRepository;
+        this.questionRepository = questionRepository;
+        this.subjectRepository = subjectRepository;
     }
 
     @Override
-    public Tag createTag(Tag tag) {
+    public Tag createTag(TagRequest tagRequest) {
+
+        var tag = Tag.builder()
+                .name(tagRequest.getName())
+                .subject(subjectRepository.findById(tagRequest.getSubjectId()).get())
+                .questions(new HashSet<>())
+                .build();
+
         return tagRepository.save(tag);
     }
 

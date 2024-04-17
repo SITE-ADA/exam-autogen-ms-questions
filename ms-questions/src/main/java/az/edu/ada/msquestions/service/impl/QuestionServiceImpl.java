@@ -95,6 +95,12 @@ public class QuestionServiceImpl implements QuestionService {
                 .tags(tags)
                 .build();
 
+        for(Tag tag: tags) {
+            tag.getQuestions().add(question);
+            tag.setQuestions(tag.getQuestions());
+            tagRepository.save(tag);
+        }
+
         return questionRepository.save(question);
     }
 
