@@ -76,6 +76,8 @@ public class SubjectServiceImpl implements SubjectService {
                     val = ESubjectStatus.valueOf(value.toString());
                 } else if(key.equals("userId")) {
                     val = Long.parseLong(value.toString());
+                } else if(key.equals("subjectStatusId")) {
+                    val = Long.valueOf(val.toString());
                 }
                 field.set(subject, val);
             } catch (NoSuchFieldException | IllegalAccessException e) {
