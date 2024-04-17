@@ -36,6 +36,6 @@ public class Subject {
     @Column(name = "crn", unique = true)
     private String crn;
 
-    @Column(name = "term", unique = true)
+    @Column(name = "term")
     private String term;
 }
