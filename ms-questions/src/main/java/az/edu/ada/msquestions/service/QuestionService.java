@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface QuestionService {
-    QuestionTestDTO getQuestionDTOForMsTest(Long questionId);
+
+    QuestionTestDTO getQuestionByIdForTest(Long questionId);
 
     List<QuestionDTO> getQuestionsByQuestionPoolId(Long questionPoolId);
 

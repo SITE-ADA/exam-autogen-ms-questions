@@ -1,9 +1,8 @@
 package az.edu.ada.msquestions.service.impl;
 
-import az.edu.ada.msquestions.model.dto.QuestionCountDTO;
-import az.edu.ada.msquestions.model.dto.QuestionDTO;
-import az.edu.ada.msquestions.model.dto.QuestionTestDTO;
+import az.edu.ada.msquestions.model.dto.*;
 import az.edu.ada.msquestions.model.entities.Answer;
+import az.edu.ada.msquestions.model.entities.CorrectAnswer;
 import az.edu.ada.msquestions.model.entities.Question;
 import az.edu.ada.msquestions.model.entities.Tag;
 import az.edu.ada.msquestions.model.request.QuestionRequest;
@@ -13,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,25 +21,46 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionPoolRepository questionPoolRepository;
     private final QuestionTypeRepository questionTypeRepository;
+    private final AnswerRepository answerRepository;
+    private final CorrectAnswerRepository correctAnswerRepository;
     private final TagRepository tagRepository;
 
     @Autowired
     public QuestionServiceImpl(QuestionRepository questionRepository, QuestionPoolRepository questionPoolRepository,
-                               QuestionTypeRepository questionTypeRepository, TagRepository tagRepository) {
+                               QuestionTypeRepository questionTypeRepository, TagRepository tagRepository,
+                               AnswerRepository answerRepository, CorrectAnswerRepository correctAnswerRepository) {
         this.questionRepository = questionRepository;
         this.questionPoolRepository = questionPoolRepository;
         this.questionTypeRepository = questionTypeRepository;
+        this.answerRepository = answerRepository;
+        this.correctAnswerRepository = correctAnswerRepository;
         this.tagRepository = tagRepository;
     }
 
-
     @Override
-    public QuestionTestDTO getQuestionDTOForMsTest(Long questionId) {
+    public QuestionTestDTO getQuestionByIdForTest(Long questionId) {
+
         Question question = questionRepository.findById(questionId).get();
 
         Set<Long> tagsIds = question.getTags().stream()
                 .map(Tag::getId)
                 .collect(Collectors.toSet());
+
+        List<AnswerDTO> answerDTOs = answerRepository.findAllByQuestionId(question.getId()).stream()
+                .map(answer -> AnswerDTO.builder()
+                        .id(answer.getId())
+                        .text(answer.getText())
+                        .build())
+                .collect(Collectors.toList());
+
+        CorrectAnswer correctAnswer = correctAnswerRepository.findByQuestionId(question.getId());
+        CorrectAnswerDTO correctAnswerDTO = CorrectAnswerDTO.builder()
+                .id(correctAnswer.getId())
+                .answer(AnswerDTO.builder()
+                        .id(correctAnswer.getAnswer().getId())
+                        .text(correctAnswer.getAnswer().getText())
+                        .build())
+                .build();
 
         return QuestionTestDTO.builder()
                 .questionId(question.getId())
@@ -53,6 +70,8 @@ public class QuestionServiceImpl implements QuestionService {
                 .questionTypeId(question.getQuestionType().getId())
                 .questionPoolId(question.getQuestionPool().getId())
                 .tagsIds(tagsIds)
+                .answers(answerDTOs)
+                .correctAnswer(correctAnswerDTO)
                 .build();
     }
 

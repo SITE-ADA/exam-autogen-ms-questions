@@ -15,6 +15,4 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("SELECT q.questionPool.id, COUNT(q) FROM Question q GROUP BY q.questionPool.id")
     List<Object[]> countQuestionsByQuestionPoolId();
-
-    Set<Question> findAllByIdIn(Set<Long> ids);
 }

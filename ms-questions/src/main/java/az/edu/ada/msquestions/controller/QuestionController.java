@@ -20,9 +20,9 @@ import java.util.Map;
 public class QuestionController {
     private final QuestionService questionService;
 
-    @GetMapping("/{questionPoolId}/forTest")
-    public QuestionTestDTO getQuestionIdForTest(@PathVariable Long questionPoolId) {
-        return  questionService.getQuestionDTOForMsTest(questionPoolId);
+    @GetMapping("/{questionId}/getQuestionByIdForTest")
+    public QuestionTestDTO getQuestionByIdForTest(@PathVariable Long questionId) {
+        return  questionService.getQuestionByIdForTest(questionId);
     }
 
     @GetMapping("/pool/{questionPoolId}")
