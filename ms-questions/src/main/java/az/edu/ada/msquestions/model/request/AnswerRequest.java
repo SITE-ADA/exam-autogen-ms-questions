@@ -19,4 +19,6 @@ public class AnswerRequest {
     private Long question;
     @NotNull
     private Set<String> text;
+    @NotNull
+    private Set<String> answerOptions;
 }

@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,13 +31,26 @@ public class AnswerServiceImpl implements AnswerService {
         Question question = questionRepository.findById(answerRequest.getQuestion())
                 .orElseThrow(() -> new IllegalArgumentException("Question not found"));
 
-        List<Answer> answers = answerRequest.getText().stream()
-                .map(text -> Answer.builder()
-                        .question(question)
-                        .text(text)
-                        .build())
-                .collect(Collectors.toList());
+        if (answerRequest.getText().size() != answerRequest.getAnswerOptions().size()) {
+            throw new IllegalArgumentException("The number of texts must match the number of answer options.");
+        }
 
+        Iterator<String> textIterator = answerRequest.getText().iterator();
+        Iterator<String> optionsIterator = answerRequest.getAnswerOptions().iterator();
+
+        List<Answer> answers = new ArrayList<>();
+        while (textIterator.hasNext() && optionsIterator.hasNext()) {
+            String text = textIterator.next();
+            String answerOption = optionsIterator.next();
+
+            Answer answer = Answer.builder()
+                    .question(question)
+                    .text(text)
+                    .answerOption(answerOption)
+                    .build();
+
+            answers.add(answer);
+        }
         // Save all answers to the database
         return answerRepository.saveAll(answers);
     }

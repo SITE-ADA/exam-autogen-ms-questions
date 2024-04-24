@@ -1,7 +1,5 @@
 package az.edu.ada.msquestions.model.dto;
 
-import az.edu.ada.msquestions.model.entities.Answer;
-import az.edu.ada.msquestions.model.entities.CorrectAnswer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -18,10 +18,9 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(columnDefinition = "TEXT")
     private String text;
-
+    private String answerOption;
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;

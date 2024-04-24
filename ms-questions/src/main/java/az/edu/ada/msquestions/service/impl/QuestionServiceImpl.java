@@ -1,7 +1,6 @@
 package az.edu.ada.msquestions.service.impl;
 
 import az.edu.ada.msquestions.model.dto.*;
-import az.edu.ada.msquestions.model.entities.Answer;
 import az.edu.ada.msquestions.model.entities.CorrectAnswer;
 import az.edu.ada.msquestions.model.entities.Question;
 import az.edu.ada.msquestions.model.entities.Tag;
@@ -50,6 +49,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .map(answer -> AnswerDTO.builder()
                         .id(answer.getId())
                         .text(answer.getText())
+                        .answerOption(answer.getAnswerOption())
                         .build())
                 .collect(Collectors.toList());
 
