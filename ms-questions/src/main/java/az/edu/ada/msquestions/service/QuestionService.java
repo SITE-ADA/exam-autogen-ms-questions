@@ -5,6 +5,7 @@ import az.edu.ada.msquestions.model.dto.QuestionDTO;
 import az.edu.ada.msquestions.model.dto.QuestionTestDTO;
 import az.edu.ada.msquestions.model.entities.Question;
 import az.edu.ada.msquestions.model.request.QuestionRequest;
+import az.edu.ada.msquestions.model.request.QuestionsRequest;
 
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public interface QuestionService {
 
     List<QuestionCountDTO> getQuestionCountsByPool();
 
-    Question createQuestion(QuestionRequest questionRequest);
+    List<Question> createQuestion(QuestionsRequest questionRequest);
     Optional<Question> getQuestionById(Long id);
     Question updateQuestion(Long id, Question question);
     Question patchQuestion(Long id, Map<String, Object> updates);

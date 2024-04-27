@@ -2,6 +2,7 @@ package az.edu.ada.msquestions.service.impl;
 
 import az.edu.ada.msquestions.model.entities.CorrectAnswer;
 import az.edu.ada.msquestions.model.request.CorrectAnswerRequest;
+import az.edu.ada.msquestions.model.request.CorrectAnswersRequest;
 import az.edu.ada.msquestions.repository.AnswerRepository;
 import az.edu.ada.msquestions.repository.CorrectAnswerRepository;
 import az.edu.ada.msquestions.repository.QuestionRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,14 +33,20 @@ public class CorrectAnswerServiceImpl implements CorrectAnswerService {
     }
 
     @Override
-    public CorrectAnswer createCorrectAnswer(CorrectAnswerRequest correctAnswerRequest) {
+    public List<CorrectAnswer> createCorrectAnswer(CorrectAnswersRequest correctAnswersRequest) {
+        List<CorrectAnswer> correctAnswerList = new ArrayList<>();
 
-        var correctAnswer = CorrectAnswer.builder()
-                .question(questionRepository.findById(correctAnswerRequest.getQuestion()).get())
-                .answer(answerRepository.findById(correctAnswerRequest.getAnswer()).get())
-                .build();
+        for(CorrectAnswerRequest correctAnswerRequest: correctAnswersRequest.getCorrectAnswerList()){
+            var correctAnswer = CorrectAnswer.builder()
+                    .question(questionRepository.findById(correctAnswerRequest.getQuestion()).get())
+                    .answer(answerRepository.findById(correctAnswerRequest.getAnswer()).get())
+                    .build();
 
-        return correctAnswerRepository.save(correctAnswer);
+            correctAnswerList.add(correctAnswer);
+        }
+        correctAnswerRepository.saveAll(correctAnswerList);
+
+        return correctAnswerList;
     }
 
     @Override

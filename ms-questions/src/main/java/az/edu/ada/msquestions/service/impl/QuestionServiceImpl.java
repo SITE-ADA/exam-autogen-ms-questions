@@ -5,6 +5,7 @@ import az.edu.ada.msquestions.model.entities.CorrectAnswer;
 import az.edu.ada.msquestions.model.entities.Question;
 import az.edu.ada.msquestions.model.entities.Tag;
 import az.edu.ada.msquestions.model.request.QuestionRequest;
+import az.edu.ada.msquestions.model.request.QuestionsRequest;
 import az.edu.ada.msquestions.repository.*;
 import az.edu.ada.msquestions.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,28 +100,29 @@ public class QuestionServiceImpl implements QuestionService {
         return dto;
     }
 
+
     @Override
-    public Question createQuestion(QuestionRequest questionRequest) {
+    public List<Question> createQuestion(QuestionsRequest questionRequests) {
 
-        Set<Long> tagsIds = questionRequest.getTagsIds();
-        Set<Tag> tags = tagRepository.findAllByIdIn(tagsIds);
+        List<Question> questions = new ArrayList<>();
 
-        var question = Question.builder()
-                .text(questionRequest.getText())
-                .notes(questionRequest.getNotes())
-                .defaultScore(questionRequest.getDefaultScore())
-                .questionType(questionTypeRepository.findById(questionRequest.getQuestionTypeId()).get())
-                .questionPool(questionPoolRepository.findById(questionRequest.getQuestionPoolId()).get())
-                .tags(tags)
-                .build();
+        for(QuestionRequest questionRequest: questionRequests.getQuestionRequest()){
+            System.out.println(questionTypeRepository.findById(questionRequest.getQuestionTypeId()).get());
+            System.out.println(questionPoolRepository.findById(questionRequest.getQuestionPoolId()).get());
 
-        for(Tag tag: tags) {
-            tag.getQuestions().add(question);
-            tag.setQuestions(tag.getQuestions());
-            tagRepository.save(tag);
+
+            var question = Question.builder()
+                    .text(questionRequest.getText())
+                    .notes(questionRequest.getNotes())
+                    .defaultScore(questionRequest.getDefaultScore())
+                    .questionType(questionTypeRepository.findById(questionRequest.getQuestionTypeId()).get())
+                    .questionPool(questionPoolRepository.findById(questionRequest.getQuestionPoolId()).get())
+                    .build();
+
+            questions.add(question);
         }
 
-        return questionRepository.save(question);
+        return questionRepository.saveAll(questions);
     }
 
     @Override

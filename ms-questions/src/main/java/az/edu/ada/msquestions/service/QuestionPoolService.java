@@ -20,4 +20,5 @@ public interface QuestionPoolService {
     QuestionPool patchQuestionPool(Long id, Map<String, Object> updates);
 
     void deleteQuestionPool(Long id);
+
 }

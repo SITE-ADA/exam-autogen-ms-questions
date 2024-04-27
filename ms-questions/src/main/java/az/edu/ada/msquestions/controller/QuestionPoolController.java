@@ -60,4 +60,10 @@ public class QuestionPoolController {
         questionPoolService.deleteQuestionPool(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<QuestionPoolDTO>> getQuestionPoolsByUserId(@PathVariable Long userId) {
+        List<QuestionPoolDTO> questionPools = questionPoolService.getQuestionPoolsByUserId(userId);
+        return ResponseEntity.ok(questionPools);
+    }
 }

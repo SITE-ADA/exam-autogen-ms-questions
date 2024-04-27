@@ -5,6 +5,7 @@ import az.edu.ada.msquestions.model.dto.QuestionDTO;
 import az.edu.ada.msquestions.model.dto.QuestionTestDTO;
 import az.edu.ada.msquestions.model.entities.Question;
 import az.edu.ada.msquestions.model.request.QuestionRequest;
+import az.edu.ada.msquestions.model.request.QuestionsRequest;
 import az.edu.ada.msquestions.service.QuestionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,8 +43,8 @@ public class QuestionController {
     }
 
     @PostMapping
-    public ResponseEntity<Question> createQuestion(@RequestBody QuestionRequest questionRequest) {
-        Question createdQuestion = questionService.createQuestion(questionRequest);
+    public ResponseEntity<List<Question>> createQuestion(@RequestBody QuestionsRequest questionRequests) {
+        List<Question> createdQuestion = questionService.createQuestion(questionRequests);
         return ResponseEntity.ok(createdQuestion);
     }
 

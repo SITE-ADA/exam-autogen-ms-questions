@@ -12,5 +12,6 @@ public class QuestionDTO {
     private Long id;
     private String text;
     private String questionTypeName;
+    private Long questionTypeId;
     private Set<String> tags;
 }

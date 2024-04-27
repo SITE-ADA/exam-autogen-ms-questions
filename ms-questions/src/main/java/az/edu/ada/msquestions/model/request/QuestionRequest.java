@@ -25,6 +25,4 @@ public class QuestionRequest {
     private Long questionTypeId;
     @NotNull
     private Long questionPoolId;
-    @NotNull
-    private Set<Long> tagsIds;
 }
