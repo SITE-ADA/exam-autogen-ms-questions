@@ -2,6 +2,7 @@ package az.edu.ada.msquestions.service;
 
 import az.edu.ada.msquestions.model.dto.QuestionCountDTO;
 import az.edu.ada.msquestions.model.dto.QuestionDTO;
+import az.edu.ada.msquestions.model.dto.QuestionPoolDTO;
 import az.edu.ada.msquestions.model.dto.QuestionTestDTO;
 import az.edu.ada.msquestions.model.entities.Question;
 import az.edu.ada.msquestions.model.request.QuestionRequest;
@@ -12,6 +13,8 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface QuestionService {
+
+    Map<Long, List<Question>> getAllQuestionPoolsAndTheirQuestionsByUserId(Long id);
 
     QuestionTestDTO getQuestionByIdForTest(Long questionId);
 

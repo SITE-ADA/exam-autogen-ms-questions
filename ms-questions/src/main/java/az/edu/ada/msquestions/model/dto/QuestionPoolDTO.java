@@ -9,12 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SubjectDTO {
+public class QuestionPoolDTO {
     private Long id;
     private String name;
-    private String crn;
-    private String term;
-    private Long status;
-    private String courseObjectives;
     private String description;
+    private SubjectDTO subject;
+    private Long userId;
+    private Integer numOfQuestions;
 }

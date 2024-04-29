@@ -3,6 +3,7 @@ package az.edu.ada.msquestions.service.impl;
 import az.edu.ada.msquestions.model.dto.*;
 import az.edu.ada.msquestions.model.entities.CorrectAnswer;
 import az.edu.ada.msquestions.model.entities.Question;
+import az.edu.ada.msquestions.model.entities.QuestionPool;
 import az.edu.ada.msquestions.model.entities.Tag;
 import az.edu.ada.msquestions.model.request.QuestionRequest;
 import az.edu.ada.msquestions.model.request.QuestionsRequest;
@@ -23,18 +24,30 @@ public class QuestionServiceImpl implements QuestionService {
     private final QuestionTypeRepository questionTypeRepository;
     private final AnswerRepository answerRepository;
     private final CorrectAnswerRepository correctAnswerRepository;
-    private final TagRepository tagRepository;
+    private final SubjectRepository subjectRepository;
 
     @Autowired
     public QuestionServiceImpl(QuestionRepository questionRepository, QuestionPoolRepository questionPoolRepository,
-                               QuestionTypeRepository questionTypeRepository, TagRepository tagRepository,
+                               QuestionTypeRepository questionTypeRepository, SubjectRepository subjectRepository,
                                AnswerRepository answerRepository, CorrectAnswerRepository correctAnswerRepository) {
         this.questionRepository = questionRepository;
         this.questionPoolRepository = questionPoolRepository;
         this.questionTypeRepository = questionTypeRepository;
         this.answerRepository = answerRepository;
         this.correctAnswerRepository = correctAnswerRepository;
-        this.tagRepository = tagRepository;
+        this.subjectRepository = subjectRepository;
+    }
+
+    @Override
+    public Map<Long, List<Question>> getAllQuestionPoolsAndTheirQuestionsByUserId(Long id){
+        List<QuestionPool> questionPools = questionPoolRepository.getByUserId(id);
+        Map<Long, List<Question>> mapQuestionPool = new HashMap<>();
+        for(QuestionPool questionPool: questionPools){
+            List<Question> questions = questionRepository.findByQuestionPoolId(questionPool.getId());
+            mapQuestionPool.put(questionPool.getId(), questions);
+        }
+
+        return mapQuestionPool;
     }
 
     @Override

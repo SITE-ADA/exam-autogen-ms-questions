@@ -86,4 +86,11 @@ public class QuestionController {
         questionService.deleteQuestion(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/poolByUserId/{userId}")
+    public ResponseEntity<Map<Long, List<Question>>> getAllQuestionPoolsAndTheirQuestionsByUserId(@PathVariable Long userId) {
+        Map<Long, List<Question>> data = questionService.getAllQuestionPoolsAndTheirQuestionsByUserId(userId);
+        return ResponseEntity.ok(data); // This wraps the data inside a ResponseEntity with an HTTP 200 OK status
+    }
+
 }

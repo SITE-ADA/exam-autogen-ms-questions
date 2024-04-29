@@ -8,4 +8,5 @@ import java.util.List;
 
 
 public interface QuestionPoolRepository extends JpaRepository<QuestionPool, Long> {
+    List<QuestionPool> getByUserId(Long id);
 }

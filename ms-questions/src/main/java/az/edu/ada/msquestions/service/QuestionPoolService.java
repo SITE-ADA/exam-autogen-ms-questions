@@ -1,5 +1,6 @@
 package az.edu.ada.msquestions.service;
 
+import az.edu.ada.msquestions.model.dto.QuestionPoolDTO;
 import az.edu.ada.msquestions.model.entities.QuestionPool;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +11,7 @@ import java.util.Optional;
 public interface QuestionPoolService {
     QuestionPool createQuestionPool(QuestionPool questionPool);
 
-    List<QuestionPool> getAllQuestionPools();
+    List<QuestionPoolDTO> getAllQuestionPools();
 
     Optional<QuestionPool> getQuestionPoolById(Long id);
 

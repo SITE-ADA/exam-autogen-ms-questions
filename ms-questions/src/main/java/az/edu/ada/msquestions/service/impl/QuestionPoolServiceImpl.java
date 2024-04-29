@@ -1,16 +1,20 @@
 package az.edu.ada.msquestions.service.impl;
 
 import az.edu.ada.msquestions.model.dto.QuestionDTO;
+import az.edu.ada.msquestions.model.dto.QuestionPoolDTO;
+import az.edu.ada.msquestions.model.dto.SubjectDTO;
 import az.edu.ada.msquestions.model.entities.Question;
 import az.edu.ada.msquestions.model.entities.QuestionPool;
 import az.edu.ada.msquestions.repository.QuestionPoolRepository;
 import az.edu.ada.msquestions.repository.QuestionRepository;
+import az.edu.ada.msquestions.repository.SubjectRepository;
 import az.edu.ada.msquestions.service.QuestionPoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,12 +25,15 @@ public class QuestionPoolServiceImpl implements QuestionPoolService {
 
     private final QuestionPoolRepository questionPoolRepository;
     private final QuestionRepository questionRepository;
+    private final SubjectRepository subjectRepository;
 
     @Autowired
     public QuestionPoolServiceImpl(QuestionPoolRepository questionPoolRepository,
-                                   QuestionRepository questionRepository) {
+                                   QuestionRepository questionRepository,
+                                   SubjectRepository subjectRepository) {
         this.questionPoolRepository = questionPoolRepository;
         this.questionRepository = questionRepository;
+        this.subjectRepository = subjectRepository;
     }
 
     @Override
@@ -35,8 +42,36 @@ public class QuestionPoolServiceImpl implements QuestionPoolService {
     }
 
     @Override
-    public List<QuestionPool> getAllQuestionPools() {
-        return questionPoolRepository.findAll();
+    public List<QuestionPoolDTO> getAllQuestionPools() {
+        List<QuestionPool> questionPools = questionPoolRepository.findAll();
+        List<QuestionPoolDTO> questionPoolsDTO = new ArrayList<>();
+        for(QuestionPool questionPool: questionPools){
+            var questions = questionRepository.findByQuestionPoolId(questionPool.getId());
+
+            var subject = subjectRepository.findById(questionPool.getSubjectId()).get();
+            var subjectDTO = SubjectDTO.builder()
+                    .id(subject.getId())
+                    .name(subject.getName())
+                    .description(subject.getDescription())
+                    .courseObjectives(subject.getCourseObjectives())
+                    .status(subject.getSubjectStatusId())
+                    .crn(subject.getCrn())
+                    .term(subject.getTerm())
+                    .build();
+
+            var questionPoolDTO = QuestionPoolDTO.builder()
+                    .id(questionPool.getId())
+                    .name(questionPool.getName())
+                    .description(questionPool.getDescription())
+                    .subject(subjectDTO)
+                    .userId(questionPool.getUserId())
+                    .numOfQuestions(questions.size())
+                    .build();
+
+            questionPoolsDTO.add(questionPoolDTO);
+        }
+
+        return questionPoolsDTO;
     }
 
     @Override
@@ -91,5 +126,4 @@ public class QuestionPoolServiceImpl implements QuestionPoolService {
     public void deleteQuestionPool(Long id) {
         questionPoolRepository.deleteById(id);
     }
-
 }

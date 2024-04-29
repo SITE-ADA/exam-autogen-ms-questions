@@ -1,5 +1,6 @@
 package az.edu.ada.msquestions.controller;
 
+import az.edu.ada.msquestions.model.dto.QuestionPoolDTO;
 import az.edu.ada.msquestions.model.entities.QuestionPool;
 import az.edu.ada.msquestions.service.QuestionPoolService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,8 @@ public class QuestionPoolController {
     }
 
     @GetMapping
-    public ResponseEntity<List<QuestionPool>> getAllQuestionPools() {
-        List<QuestionPool> questions = questionPoolService.getAllQuestionPools();
+    public ResponseEntity<List<QuestionPoolDTO>> getAllQuestionPools() {
+        List<QuestionPoolDTO> questions = questionPoolService.getAllQuestionPools();
         return ResponseEntity.ok(questions);
     }
 
@@ -61,9 +62,9 @@ public class QuestionPoolController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<QuestionPoolDTO>> getQuestionPoolsByUserId(@PathVariable Long userId) {
-        List<QuestionPoolDTO> questionPools = questionPoolService.getQuestionPoolsByUserId(userId);
-        return ResponseEntity.ok(questionPools);
-    }
+//    @GetMapping("/user/{userId}")
+//    public ResponseEntity<List<QuestionPoolDTO>> getQuestionPoolsByUserId(@PathVariable Long userId) {
+//        List<QuestionPoolDTO> questionPools = questionPoolService.getQuestionPoolsByUserId(userId);
+//        return ResponseEntity.ok(questionPools);
+//    }
 }
